@@ -33,11 +33,11 @@ public class AuthenticationService {
                 .build();
     }
 
-    public UserAuthResponse register(UserCreateRequest userCreateRequest) {
+    public UserAuthResponse register(UserCreateRequest userCreateRequest,String roleName) {
         if (userService.getUserByUsername(userCreateRequest.getUsername()) != null) {
             return UserAuthResponse.builder().message("Username already taken.").build();
         }
-        User user = userService.save(userCreateRequest);
+        User user = userService.save(userCreateRequest,roleName);
         String token = authenticateUser(userCreateRequest.getUsername(), userCreateRequest.getPassword());
         return UserAuthResponse.builder()
                 .message("Registration successful, logged in.")

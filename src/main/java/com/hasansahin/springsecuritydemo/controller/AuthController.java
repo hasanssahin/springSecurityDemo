@@ -7,10 +7,7 @@ import com.hasansahin.springsecuritydemo.dto.response.UserAuthResponse;
 import com.hasansahin.springsecuritydemo.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -24,8 +21,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserAuthResponse> register(@RequestBody UserCreateRequest userCreateRequest) {
-        return ResponseEntity.ok(authenticationService.register(userCreateRequest));
+    public ResponseEntity<UserAuthResponse> register(@RequestBody UserCreateRequest userCreateRequest, @RequestParam String roleName) {
+        return ResponseEntity.ok(authenticationService.register(userCreateRequest,roleName));
     }
 
     @PostMapping("/refresh")

@@ -1,5 +1,6 @@
 package com.hasansahin.springsecuritydemo.security;
 
+import com.hasansahin.springsecuritydemo.model.Role;
 import com.hasansahin.springsecuritydemo.model.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +25,16 @@ public class JwtUserDetails implements UserDetails {
 
     public static JwtUserDetails create(User user) {
         List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("user"));
+        List<Role> roles = user.getRoles();
+        for (Role role : roles) {
+            if ("user".equals(role.getName())) {
+                authorityList.add(new SimpleGrantedAuthority("user"));
+            } else if ("admin".equals(role.getName())) {
+                authorityList.add(new SimpleGrantedAuthority("admin"));
+            } else if ("seller".equals(role.getName())) {
+                authorityList.add(new SimpleGrantedAuthority("seller"));
+            }
+        }
         return new JwtUserDetails(user.getUsername(), user.getPassword(), authorityList);
     }
 

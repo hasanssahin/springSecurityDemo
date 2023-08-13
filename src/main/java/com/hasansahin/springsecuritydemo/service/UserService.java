@@ -16,14 +16,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
     public User getUserByUsername(String username) {
         return userRepository.getUserByUsername(username);
     }
 
-    public User save(UserCreateRequest userCreateRequest) {
+    public User save(UserCreateRequest userCreateRequest,String roleName) {
         User user = userConverter.convertUserCreateRequesttoUser(userCreateRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.getRoles().add(roleService.getByName(roleName));
         return userRepository.save(user);
     }
 }
